@@ -26,3 +26,15 @@ main#page {
 .main-content {
   padding: 0 !important;
 }
+
+
+/* Hide empty HTML block before iframe */
+.sqs-block-html:empty,
+.sqs-block-html:not(:has(*)) {
+  display: none !important;
+}
+
+/* Remove any remaining spacing */
+.col.sqs-col-12 {
+  padding: 0 !important;
+}
