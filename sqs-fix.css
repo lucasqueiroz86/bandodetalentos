@@ -28,10 +28,12 @@ main#page {
 }
 
 
-/* Hide empty HTML block before iframe */
-.sqs-block-html:empty,
-.sqs-block-html:not(:has(*)) {
+/* Hide the empty HTML block before the iframe (specific block ID) */
+#block-69efa2a27cf21134e681826f {
   display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 /* Remove any remaining spacing */
