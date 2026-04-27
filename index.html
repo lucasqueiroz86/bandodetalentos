@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Banco de Talentos Criativos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --surface-2: #1a1a1a;
+      --border: #2a2a2a;
+      --border-focus: #ff4d00;
+      --text: #f0f0f0;
+      --text-muted: #777;
+      --accent: #ff4d00;
+      --accent-2: #ff7a3d;
+      --success: #00d68f;
+      --radius: 12px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      position: relative;
+      padding: 80px 24px 64px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -120px; left: 50%;
+      transform: translateX(-50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(255,77,0,.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,77,0,.12);
+      border: 1px solid rgba(255,77,0,.3);
+      color: var(--accent-2);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 28px;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .5; transform: scale(.8); }
+    }
+
+    .hero h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(36px, 6vw, 68px);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -.02em;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 17px;
+      color: var(--text-muted);
+      max-width: 520px;
+      margin: 0 auto 48px;
+      line-height: 1.7;
+    }
+
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat strong {
+      display: block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .stat span {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    /* ─── FORM CONTAINER ─── */
+    .form-wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    /* ─── SECTIONS ─── */
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      margin-bottom: 16px;
+      transition: border-color .2s;
+    }
+
+    .section:focus-within {
+      border-color: rgba(255,77,0,.4);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .section-icon {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      background: rgba(255,77,0,.12);
+      border: 1px solid rgba(255,77,0,.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .section-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* ─── FIELDS ─── */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 560px) {
+      .grid-2 { grid-template-columns: 1fr; }
+      .section { padding: 24px 20px; }
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .field.full { grid-column: 1 / -1; }
+
+    label {
+      font-size: 13px;
+      font-weight: 500;
+      color: #c0c0c0;
+      letter-spacing: .01em;
+    }
+
+    label .req {
+      color: var(--accent);
+      margin-left: 3px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="url"],
+    input[type="number"],
+    select,
+    textarea {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      padding: 12px 16px;
+      width: 100%;
+      transition: border-color .2s, box-shadow .2s;
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    input::placeholder,
+    textarea::placeholder { color: #444; }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(255,77,0,.12);
+    }
+
+    input.error,
+    select.error {
+      border-color: #ff4466;
+      box-shadow: 0 0 0 3px rgba(255,68,102,.1);
+    }
+
+    .error-msg {
+      font-size: 12px;
+      color: #ff4466;
+      display: none;
+    }
+
+    .field.has-error .error-msg { display: block; }
+
+    select { cursor: pointer; }
+
+    select option { background: #1a1a1a; }
+
+    /* ─── CHIP SELECTS ─── */
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chips input[type="radio"],
+    .chips input[type="checkbox"] {
+      display: none;
+    }
+
+    .chip-label {
+      padding: 8px 16px;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all .15s;
+      user-select: none;
+    }
+
+    .chip-label:hover {
+      border-color: rgba(255,77,0,.4);
+      color: var(--text);
+    }
+
+    .chips input:checked + .chip-label {
+      background: rgba(255,77,0,.15);
+      border-color: var(--accent);
+      color: var(--accent-2);
+    }
+
+    /* ─── TOGGLE ─── */
+    .toggle-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .toggle-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all .15s;
+    }
+
+    .toggle-item:hover {
+      border-color: rgba(255,77,0,.3);
+    }
+
+    .toggle-item input[type="radio"],
+    .toggle-item input[type="checkbox"] {
+      display: none;
+    }
+
+    .toggle-item.selected {
+      background: rgba(255,77,0,.08);
+      border-color: rgba(255,77,0,.4);
+    }
+
+    .toggle-dot {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      flex-shrink: 0;
+      transition: all .15s;
+      position: relative;
+    }
+
+    .toggle-item.selected .toggle-dot {
+      border-color: var(--accent);
+      background: var(--accent);
+    }
+
+    .toggle-item.selected .toggle-dot::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: white;
+    }
+
+    .toggle-square {
+      width: 18px; height: 18px;
+      border-radius: 4px;
+      border: 2px solid var(--border);
+      flex-shrink: 0;
+      transition: all .15s;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .toggle-item.selected .toggle-square {
+      border-color: var(--accent);
+      background: var(--accent);
+    }
+
+    .toggle-item.selected .toggle-square::after {
+      content: '✓';
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .toggle-text strong {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .toggle-text span {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* ─── SALARY ─── */
+    .salary-wrap {
+      position: relative;
+    }
+
+    .salary-prefix {
+      position: absolute;
+      left: 14px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 500;
+      pointer-events: none;
+    }
+
+    .salary-wrap input { padding-left: 44px; }
+
+    /* ─── SUBMIT ─── */
+    .submit-area {
+      padding: 32px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      text-align: center;
+    }
+
+    .submit-note {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .btn-submit {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: var(--accent);
+      color: white;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 16px 40px;
+      border-radius: 100px;
+      border: none;
+      cursor: pointer;
+      transition: all .2s;
+      width: 100%;
+      max-width: 360px;
+      letter-spacing: .01em;
+    }
+
+    .btn-submit:hover:not(:disabled) {
+      background: var(--accent-2);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(255,77,0,.3);
+    }
+
+    .btn-submit:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
+
+    .btn-submit .spinner {
+      width: 18px; height: 18px;
+      border: 2px solid rgba(255,255,255,.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      display: none;
+    }
+
+    .btn-submit.loading .spinner { display: block; }
+    .btn-submit.loading .btn-text { display: none; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ─── SUCCESS ─── */
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 60px 24px;
+    }
+
+    .success-screen.visible { display: block; }
+
+    .success-icon {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: rgba(0,214,143,.12);
+      border: 2px solid rgba(0,214,143,.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      margin: 0 auto 24px;
+      animation: pop .4s cubic-bezier(.34,1.56,.64,1);
+    }
+
+    @keyframes pop {
+      from { transform: scale(0); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+
+    .success-screen h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 30px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .success-screen p {
+      color: var(--text-muted);
+      max-width: 400px;
+      margin: 0 auto;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    /* ─── DIVIDER ─── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 20px 0;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      text-align: center;
+      padding: 32px 24px;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .conditional-field {
+      display: none;
+      margin-top: 12px;
+    }
+
+    .conditional-field.visible { display: flex; flex-direction: column; gap: 8px; }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">Banco de Talentos</div>
+    <h1>Criativos que<br/><span>fazem acontecer.</span></h1>
+    <p>Cadastre-se no nosso banco de talentos e apareça para projetos que combinam com o seu perfil — agência, marcas e colaborações.</p>
+    <div class="hero-stats">
+      <div class="stat"><strong>Free</strong><span>Sempre gratuito</span></div>
+      <div class="stat"><strong>3 min</strong><span>Para preencher</span></div>
+      <div class="stat"><strong>100%</strong><span>Curadoria humana</span></div>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div class="form-wrap">
+    <form id="talentForm" novalidate>
+
+      <!-- 1. DADOS PESSOAIS -->
+      <div class="section">
+        <div class="section-header">
+          <div class="section-icon">👤</div>
+          <div>
+            <div class="section-title">Dados pessoais</div>
+            <div class="section-subtitle">Como vamos te encontrar</div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field full" id="field-name">
+            <label for="name">Nome completo <span class="req">*</span></label>
+            <input type="text" id="name" name="name" placeholder="Seu nome" autocomplete="name" />
+            <span class="error-msg">Por favor, informe seu nome.</span>
+          </div>
+
+          <div class="field" id="field-email">
+            <label for="email">E-mail <span class="req">*</span></label>
+            <input type="email" id="email" name="email" placeholder="voce@email.com" autocomplete="email" />
+            <span class="error-msg">Informe um e-mail válido.</span>
+          </div>
+
+          <div class="field" id="field-phone">
+            <label for="phone">WhatsApp <span class="req">*</span></label>
+            <input type="tel" id="phone" name="phone" placeholder="(11) 99999-9999" autocomplete="tel" />
+            <span class="error-msg">Informe seu WhatsApp.</span>
+          </div>
+
+          <div class="field full" id="field-city">
+            <label for="city">Cidade onde mora <span class="req">*</span></label>
+            <input type="text" id="city" name="city" placeholder="Ex: São Paulo – SP" />
+            <span class="error-msg">Informe sua cidade.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. PORTFÓLIO & ATUAÇÃO -->
+      <div class="section">
+        <div class="section-header">
+          <div class="section-icon">🎨</div>
+          <div>
+            <div class="section-title">Portfólio & atuação</div>
+            <div class="section-subtitle">Mostre seu trabalho</div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:20px;">
+
+          <div class="field" id="field-portfolio">
+            <label for="portfolio">Link do portfólio <span class="req">*</span></label>
+            <input type="url" id="portfolio" name="portfolio" placeholder="https://seusite.com ou Behance, Vimeo..." />
+            <span class="error-msg">Informe um link válido (inclua https://).</span>
+          </div>
+
+          <div class="field" id="field-specialty">
+            <label>Especialidade criativa <span class="req">*</span></label>
+            <div class="chips" id="specialty-chips">
+              <input type="radio" name="specialty" id="sp-videomaker" value="Videomaker" /><label class="chip-label" for="sp-videomaker">Videomaker</label>
+              <input type="radio" name="specialty" id="sp-motion" value="Motion Designer" /><label class="chip-label" for="sp-motion">Motion Designer</label>
+              <input type="radio" name="specialty" id="sp-da" value="Diretor de Arte" /><label class="chip-label" for="sp-da">Diretor de Arte</label>
+              <input type="radio" name="specialty" id="sp-design" value="Designer Gráfico" /><label class="chip-label" for="sp-design">Designer Gráfico</label>
+              <input type="radio" name="specialty" id="sp-redator" value="Redator" /><label class="chip-label" for="sp-redator">Redator</label>
+              <input type="radio" name="specialty" id="sp-copy" value="Copywriter de Growth" /><label class="chip-label" for="sp-copy">Copywriter de Growth</label>
+            </div>
+            <span class="error-msg" id="specialty-error" style="display:none;">Selecione uma especialidade.</span>
+          </div>
+
+          <div class="field" id="field-seniority">
+            <label>Senioridade <span class="req">*</span></label>
+            <div class="chips" id="seniority-chips">
+              <input type="radio" name="seniority" id="sr-jr" value="Júnior" /><label class="chip-label" for="sr-jr">Júnior</label>
+              <input type="radio" name="seniority" id="sr-pl" value="Pleno" /><label class="chip-label" for="sr-pl">Pleno</label>
+              <input type="radio" name="seniority" id="sr-sr" value="Sênior" /><label class="chip-label" for="sr-sr">Sênior</label>
+              <input type="radio" name="seniority" id="sr-coord" value="Coordenador" /><label class="chip-label" for="sr-coord">Coordenador</label>
+              <input type="radio" name="seniority" id="sr-ger" value="Gerente" /><label class="chip-label" for="sr-ger">Gerente</label>
+              <input type="radio" name="seniority" id="sr-dir" value="Diretor" /><label class="chip-label" for="sr-dir">Diretor</label>
+            </div>
+            <span class="error-msg" id="seniority-error" style="display:none;">Selecione sua senioridade.</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 3. DISPONIBILIDADE -->
+      <div class="section">
+        <div class="section-header">
+          <div class="section-icon">📍</div>
+          <div>
+            <div class="section-title">Disponibilidade</div>
+            <div class="section-subtitle">Como você prefere trabalhar</div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:20px;">
+
+          <div class="field" id="field-workmode">
+            <label>Modelo de trabalho <span class="req">*</span></label>
+            <div class="toggle-group" id="workmode-group">
+              <label class="toggle-item" onclick="selectToggle(this,'workmode-group')">
+                <input type="radio" name="workmode" value="Presencial" />
+                <div class="toggle-dot"></div>
+                <div class="toggle-text">
+                  <strong>Presencial</strong>
+                  <span>Disponível para ir ao escritório ou set</span>
+                </div>
+              </label>
+              <label class="toggle-item" onclick="selectToggle(this,'workmode-group')">
+                <input type="radio" name="workmode" value="Remoto" />
+                <div class="toggle-dot"></div>
+                <div class="toggle-text">
+                  <strong>Somente remoto</strong>
+                  <span>Trabalho apenas de forma remota</span>
+                </div>
+              </label>
+              <label class="toggle-item" onclick="selectToggle(this,'workmode-group')">
+                <input type="radio" name="workmode" value="Híbrido" />
+                <div class="toggle-dot"></div>
+                <div class="toggle-text">
+                  <strong>Híbrido</strong>
+                  <span>Combino presencial e remoto</span>
+                </div>
+              </label>
+            </div>
+            <span class="error-msg" id="workmode-error" style="display:none;">Selecione um modelo.</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 4. SITUAÇÃO PROFISSIONAL -->
+      <div class="section">
+        <div class="section-header">
+          <div class="section-icon">💼</div>
+          <div>
+            <div class="section-title">Situação profissional</div>
+            <div class="section-subtitle">Ajuda a entender seu momento</div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:20px;">
+
+          <!-- Empresa aberta -->
+          <div class="field" id="field-hascompany">
+            <label>Tem empresa aberta? <span class="req">*</span></label>
+            <div class="toggle-group" id="hascompany-group">
+              <label class="toggle-item" onclick="selectToggle(this,'hascompany-group'); toggleConditional('company-type-wrap', this, 'Sim')">
+                <input type="radio" name="hascompany" value="Sim" />
+                <div class="toggle-dot"></div>
+                <div class="toggle-text"><strong>Sim</strong></div>
+              </label>
+              <label class="toggle-item" onclick="selectToggle(this,'hascompany-group'); toggleConditional('company-type-wrap', this, 'Não')">
+                <input type="radio" name="hascompany" value="Não" />
+                <div class="toggle-dot"></div>
+                <div class="toggle-text"><strong>Não</strong></div>
+              </label>
+            </div>
+            <span class="error-msg" id="hascompany-error" style="display:none;">Selecione uma opção.</span>
+
+            <div class="conditional-field" id="company-type-wrap">
+              <label for="companytype">Qual tipo de empresa?</label>
+              <div class="chips" id="companytype-chips">
+                <input type="radio" name="companytype" id="ct-mei" value="MEI" /><label class="chip-label" for="ct-mei">MEI</label>
+                <input type="radio" name="companytype" id="ct-me" value="ME" /><label class="chip-label" for="ct-me">ME</label>
+                <input type="radio" name="companytype" id="ct-simples" value="Simples Nacional" /><label class="chip-label" for="ct-simples">Simples Nacional</label>
+                <input type="radio" name="companytype" id="ct-sas" value="S.A.S" /><label class="chip-label" for="ct-sas">S.A.S</label>
+                <input type="radio" name="companytype" id="ct-outros" value="Outros" /><label class="chip-label" for="ct-outros">Outros</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Empregado -->
+          <div class="field" id="field-employed">
+            <label>Está trabalhando em algum lugar atualmente? <span class="req">*</span></label>
+            <div class="toggle-group" id="employed-group">
+              <label class="toggle-item" onclick="selectToggle(this,'employed-group')">
+                <input type="radio" name="employed" value="Sim, CLT" />
+                <div class="toggle-dot"></div>
+                <div class="toggle-text"><strong>Sim, CLT</strong><span>Empregado com carteira assinada</span></div>
+              </label>
+              <label class="toggle-item" onclick="selectToggle(this,'employed-group')">
+                <input type="radio" name="employed" value="Sim, PJ" />
+                <div class="toggle-dot"></div>
+                <div class="toggle-text"><strong>Sim, PJ</strong><span>Prestando serviço como pessoa jurídica</span></div>
+              </label>
+              <label class="toggle-item" onclick="selectToggle(this,'employed-group')">
+                <input type="radio" name="employed" value="Freelancer" />
+                <div class="toggle-dot"></div>
+                <div class="toggle-text"><strong>Freelancer</strong><span>Trabalhando por conta</span></div>
+              </label>
+              <label class="toggle-item" onclick="selectToggle(this,'employed-group')">
+                <input type="radio" name="employed" value="Não" />
+                <div class="toggle-dot"></div>
+                <div class="toggle-text"><strong>Não</strong><span>Disponível integralmente</span></div>
+              </label>
+            </div>
+            <span class="error-msg" id="employed-error" style="display:none;">Selecione uma opção.</span>
+          </div>
+
+          <!-- Pretensão salarial -->
+          <div class="field" id="field-salary">
+            <label for="salary">Pretensão salarial / cachê por mês <span class="req">*</span></label>
+            <div class="salary-wrap">
+              <span class="salary-prefix">R$</span>
+              <input type="number" id="salary" name="salary" placeholder="Ex: 8000" min="0" />
+            </div>
+            <span class="error-msg">Informe sua pretensão salarial.</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- SUBMIT -->
+      <div class="submit-area">
+        <p class="submit-note">Seus dados ficam guardados com segurança e são usados apenas para oportunidades criativas. Nada de spam — prometemos.</p>
+        <button type="submit" class="btn-submit" id="submitBtn">
+          <div class="spinner"></div>
+          <span class="btn-text">Entrar para o banco de talentos →</span>
+        </button>
+      </div>
+
+    </form>
+
+    <!-- SUCCESS -->
+    <div class="success-screen" id="successScreen">
+      <div class="success-icon">✓</div>
+      <h2>Você está dentro!</h2>
+      <p>Cadastro recebido com sucesso. Fique de olho no e-mail — você receberá uma confirmação em instantes e entraremos em contato quando surgir uma oportunidade que combine com o seu perfil.</p>
+    </div>
+  </div>
+
+  <footer>
+    Banco de Talentos Criativos &nbsp;·&nbsp; Curado com carinho
+  </footer>
+
+  <script>
+    // ─── CONFIG ───────────────────────────────────────────────────
+    // Cole aqui a URL do seu Google Apps Script após publicar como Web App
+    const SCRIPT_URL = 'COLE_AQUI_A_URL_DO_APPS_SCRIPT';
+    // ──────────────────────────────────────────────────────────────
+
+    function selectToggle(el, groupId) {
+      const group = document.getElementById(groupId);
+      group.querySelectorAll('.toggle-item').forEach(i => i.classList.remove('selected'));
+      el.classList.add('selected');
+      const errId = groupId.replace('-group','-error');
+      const err = document.getElementById(errId);
+      if (err) err.style.display = 'none';
+    }
+
+    function toggleConditional(wrapId, triggerEl, triggerValue) {
+      const wrap = document.getElementById(wrapId);
+      const input = triggerEl.querySelector('input');
+      wrap.classList.toggle('visible', input && input.value === triggerValue);
+    }
+
+    // Phone mask
+    document.getElementById('phone').addEventListener('input', function() {
+      let v = this.value.replace(/\D/g,'');
+      if (v.length <= 10) v = v.replace(/(\d{2})(\d{4})(\d{0,4})/,'($1) $2-$3');
+      else                v = v.replace(/(\d{2})(\d{5})(\d{0,4})/,'($1) $2-$3');
+      this.value = v;
+    });
+
+    // Salary mask (allow only numbers)
+    document.getElementById('salary').addEventListener('input', function() {
+      this.value = this.value.replace(/[^0-9]/g,'');
+    });
+
+    function getVal(name) {
+      const el = document.querySelector(`[name="${name}"]:checked`);
+      return el ? el.value : '';
+    }
+
+    function validate() {
+      let ok = true;
+
+      const required = [
+        { id: 'name',      field: 'field-name' },
+        { id: 'email',     field: 'field-email', type: 'email' },
+        { id: 'phone',     field: 'field-phone' },
+        { id: 'city',      field: 'field-city' },
+        { id: 'portfolio', field: 'field-portfolio', type: 'url' },
+        { id: 'salary',    field: 'field-salary' },
+      ];
+
+      required.forEach(({ id, field, type }) => {
+        const el = document.getElementById(id);
+        const wrap = document.getElementById(field);
+        el.classList.remove('error');
+        wrap.classList.remove('has-error');
+        const val = el.value.trim();
+        let invalid = !val;
+        if (!invalid && type === 'email') invalid = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+        if (!invalid && type === 'url')   invalid = !val.startsWith('http');
+        if (invalid) { el.classList.add('error'); wrap.classList.add('has-error'); ok = false; }
+      });
+
+      if (!getVal('specialty')) { document.getElementById('specialty-error').style.display='block'; ok=false; }
+      else document.getElementById('specialty-error').style.display='none';
+
+      if (!getVal('seniority')) { document.getElementById('seniority-error').style.display='block'; ok=false; }
+      else document.getElementById('seniority-error').style.display='none';
+
+      if (!getVal('workmode')) { document.getElementById('workmode-error').style.display='block'; ok=false; }
+      else document.getElementById('workmode-error').style.display='none';
+
+      if (!getVal('hascompany')) { document.getElementById('hascompany-error').style.display='block'; ok=false; }
+      else document.getElementById('hascompany-error').style.display='none';
+
+      if (!getVal('employed')) { document.getElementById('employed-error').style.display='block'; ok=false; }
+      else document.getElementById('employed-error').style.display='none';
+
+      return ok;
+    }
+
+    document.getElementById('talentForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      if (!validate()) {
+        document.querySelector('.field.has-error, [style*="block"]') && window.scrollTo({ top: document.querySelector('.field.has-error')?.offsetTop - 80 || 0, behavior:'smooth' });
+        return;
+      }
+
+      const btn = document.getElementById('submitBtn');
+      btn.classList.add('loading');
+      btn.disabled = true;
+
+      const payload = {
+        name:        document.getElementById('name').value.trim(),
+        email:       document.getElementById('email').value.trim(),
+        phone:       document.getElementById('phone').value.trim(),
+        city:        document.getElementById('city').value.trim(),
+        portfolio:   document.getElementById('portfolio').value.trim(),
+        specialty:   getVal('specialty'),
+        seniority:   getVal('seniority'),
+        workmode:    getVal('workmode'),
+        hascompany:  getVal('hascompany'),
+        companytype: getVal('companytype') || '—',
+        employed:    getVal('employed'),
+        salary:      document.getElementById('salary').value.trim(),
+        timestamp:   new Date().toLocaleString('pt-BR'),
+      };
+
+      try {
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+
+        document.getElementById('talentForm').style.display = 'none';
+        document.getElementById('successScreen').classList.add('visible');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch (err) {
+        alert('Erro ao enviar. Tente novamente ou entre em contato.');
+        btn.classList.remove('loading');
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
