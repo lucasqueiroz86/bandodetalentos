@@ -1,0 +1,28 @@
+/* Fix Squarespace layout for bancodetalentos page */
+main#page {
+  max-width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  width: 100% !important;
+}
+
+#siteWrapper {
+  background: #0a0a0a !important;
+}
+
+.sqs-block-website-component .sqs-block-content,
+.sqs-block-website-component {
+  padding: 0 !important;
+}
+
+.row.sqs-row {
+  margin: 0 !important;
+}
+
+.sqs-layout.sqs-grid-12 {
+  padding: 0 !important;
+}
+
+.main-content {
+  padding: 0 !important;
+}
