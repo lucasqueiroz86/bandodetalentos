@@ -752,10 +752,10 @@
 
           <!-- Pretensão salarial -->
           <div class="field" id="field-salary">
-            <label for="salary">Pretensão salarial</label>
+            <label for="salary">Pretensão salarial <span class="req">*</span></label>
             <div class="salary-wrap">
               <span class="salary-prefix">R$</span>
-              <input type="number" id="salary" name="salary" placeholder="Ex: 8000" min="0" />
+              <input type="number" id="salary" name="salary" placeholder="Ex: 8000" min="0" required />
             </div>
             <span class="error-msg">Informe sua pretensão salarial.</span>
           </div>
@@ -846,6 +846,7 @@
         { id: 'phone',     field: 'field-phone' },
         { id: 'city',      field: 'field-city' },
         { id: 'portfolio', field: 'field-portfolio', type: 'url' },
+        { id: 'salary',    field: 'field-salary' },
       ];
 
       required.forEach(({ id, field, type }) => {
