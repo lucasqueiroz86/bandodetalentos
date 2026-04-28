@@ -597,12 +597,12 @@
 
           <div class="field" id="field-portfolio">
             <label for="portfolio">Link do portfólio <span class="req">*</span></label>
-            <input type="url" id="portfolio" name="portfolio" placeholder="https://seusite.com ou Behance, Vimeo..." />
+            <input type="url" id="portfolio" name="portfolio" placeholder="https://seusite.com ou Behance, Vimeo..." onblur="prefixPortfolioUrl(this)" />
             <span class="error-msg">Informe um link válido (inclua https://).</span>
           </div>
 
           <div class="field" id="field-specialty">
-            <label>Especialidade criativa <span class="req">*</span></label>
+            <label>Especialidade <span class="req">*</span></label>
             <div class="chips" id="specialty-chips">
               <input type="radio" name="specialty" id="sp-videomaker" value="Videomaker" /><label class="chip-label" for="sp-videomaker">Videomaker</label>
               <input type="radio" name="specialty" id="sp-motion" value="Motion Designer" /><label class="chip-label" for="sp-motion">Motion Designer</label>
@@ -610,6 +610,11 @@
               <input type="radio" name="specialty" id="sp-design" value="Designer Gráfico" /><label class="chip-label" for="sp-design">Designer Gráfico</label>
               <input type="radio" name="specialty" id="sp-redator" value="Redator" /><label class="chip-label" for="sp-redator">Redator</label>
               <input type="radio" name="specialty" id="sp-copy" value="Copywriter de Growth" /><label class="chip-label" for="sp-copy">Copywriter de Growth</label>
+              <input type="radio" name="specialty" id="sp-atendimento" value="Atendimento" /><label class="chip-label" for="sp-atendimento">Atendimento</label>
+              <input type="radio" name="specialty" id="sp-planejamento" value="Planejamento" /><label class="chip-label" for="sp-planejamento">Planejamento</label>
+              <input type="radio" name="specialty" id="sp-midia" value="Mídia" /><label class="chip-label" for="sp-midia">Mídia</label>
+              <input type="radio" name="specialty" id="sp-growth" value="Growth Marketing" /><label class="chip-label" for="sp-growth">Growth Marketing</label>
+              <input type="radio" name="specialty" id="sp-ilustrador" value="Ilustrador" /><label class="chip-label" for="sp-ilustrador">Ilustrador</label>
             </div>
             <span class="error-msg" id="specialty-error" style="display:none;">Selecione uma especialidade.</span>
           </div>
@@ -747,7 +752,7 @@
 
           <!-- Pretensão salarial -->
           <div class="field" id="field-salary">
-            <label for="salary">Pretensão salarial / cachê por mês <span class="req">*</span></label>
+            <label for="salary">Pretensão salarial</label>
             <div class="salary-wrap">
               <span class="salary-prefix">R$</span>
               <input type="number" id="salary" name="salary" placeholder="Ex: 8000" min="0" />
@@ -787,7 +792,19 @@
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz0YIiTS42S7C9Vu8h_RltwI_CQ-Wm9pZijyiulOesfuGckKujITLmHeIUzd3DIWttg/exec';
     // ──────────────────────────────────────────────────────────────
 
-    function selectToggle(el, groupId) {
+    
+  function prefixPortfolioUrl(input) {
+    var val = input.value.trim();
+    if (val && !/^https?:\/\//i.test(val)) {
+      if (val.startsWith('www.')) {
+        input.value = 'https://' + val;
+      } else {
+        input.value = 'https://www.' + val;
+      }
+    }
+  }
+
+  function selectToggle(el, groupId) {
       const group = document.getElementById(groupId);
       group.querySelectorAll('.toggle-item').forEach(i => i.classList.remove('selected'));
       el.classList.add('selected');
@@ -829,7 +846,6 @@
         { id: 'phone',     field: 'field-phone' },
         { id: 'city',      field: 'field-city' },
         { id: 'portfolio', field: 'field-portfolio', type: 'url' },
-        { id: 'salary',    field: 'field-salary' },
       ];
 
       required.forEach(({ id, field, type }) => {
